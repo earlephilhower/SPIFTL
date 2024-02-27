@@ -1,0 +1,14 @@
+[global]
+bs=512
+iodepth=16
+direct=1
+ioengine=libaio
+group_reporting
+time_based
+runtime=3600
+numjobs=1
+name=nbdftl
+rw=randrw
+							
+[job1]
+filename=/dev/nbd9

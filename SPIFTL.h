@@ -59,8 +59,20 @@ public:
         delete[] peCount;
     }
 
-    int lbaCount() {
+    inline int lbaCount() {
         return flashLBAs;
+    }
+
+    inline int ebCount() {
+        return eraseBlocks;
+    }
+
+    inline int getPECountOffset() {
+        return peCountOffset;
+    }
+
+    inline uint8_t getPECount(int eb) {
+        return peCount[eb];
     }
 
     bool format() {

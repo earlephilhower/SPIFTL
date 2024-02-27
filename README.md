@@ -9,7 +9,7 @@ tables and directory entries.
 
 There were three design goals:
 * Preserve data
-* Keep the flash array within a limited PE (program/erase) cycle count
+* Keep the flash array within a limited PE (program/erase) cycle range
 * Miimize the memory at the cost of write speed
 
 While the process used here is similar in concept to what a modern SSD does,

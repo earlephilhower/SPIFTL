@@ -68,7 +68,10 @@ public:
 
     virtual bool eraseBlock(int eb) override {
         if (_isErased[eb]) {
-            printf("ERROR: Erasing already erased block eb %d\n", eb);
+            // Commenting out this check because the MD operations do an erase when changing epochs
+            // If they don't erase, they could leave stale MD to be found on startup, wasting RAM and time
+            // Testing w/FIO doesn't show any re-erases outside of the MD operations.
+            //printf("ERROR: Erasing already erased block eb %d\n", eb);
         }
         _isErased[eb] = 1;
         if (eb < _flashSize / ebBytes) {

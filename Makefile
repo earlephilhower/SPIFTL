@@ -1,4 +1,4 @@
-.PHONY: nbdkit
+.PHONY: nbdkit valgrind
 
 all: nbd
 
@@ -18,3 +18,7 @@ nbdtest:
 
 clean:
 	rm -f nbdftl.so lba.bin flash.bin
+
+valgrind:
+	g++ -g -o0 -o valgrindtest valgrindtest.cpp
+	valgrind  --leak-check=full --track-origins=yes --error-limit=no --show-leak-kinds=all --error-exitcode=999 --tool=memcheck ./valgrindtest 666

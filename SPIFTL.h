@@ -465,13 +465,13 @@ private:
             metaEBList[i] = eb;
             emptyEBs--;
         }
-    
+
         metadataEpoch++;
         metadataEBindex = 0;
         metadataEBoffset = 0;
         metadataCRC.reset();
     }
-    
+
     inline void writeMetadata8b(uint8_t b, char *wb) {
         if (metadataEBoffset == 4096 - 4) {
             uint32_t crc = metadataCRC.get();
@@ -525,7 +525,7 @@ private:
 
     bool doPersist() {
         char wb[flashWriteBufferSize]; // Keep on stack to avoid needing to malloc() from inside persist
-    
+
         openMetadataStreamForWrite(); // Will increment epoch, choose oldest MD copy to overwrite
 
         // Dump FTLInfo
@@ -628,7 +628,7 @@ private:
     }
 
     inline uint32_t readMetadata32b() {
-        return  (readMetadata8b() << 24) | (readMetadata8b() << 16) | (readMetadata8b() << 8) | readMetadata8b();
+        return (readMetadata8b() << 24) | (readMetadata8b() << 16) | (readMetadata8b() << 8) | readMetadata8b();
     }
 
     bool doLoadHighestEpochMetadata() {
@@ -906,7 +906,7 @@ private:
         }
         return curIdx;
     }
-    
+
     inline int gcScore(int eb) {
         unsigned int state = getEBState(eb);
         if ((state == ebMeta) || !state) {
@@ -916,7 +916,7 @@ private:
         if (delta >= maxPEDiff) {
             return 10 + delta - maxPEDiff; // Aged out, choose oldest
         }
-        if (delta > ((maxPEDiff * 7 ) / 8)) {
+        if (delta > ((maxPEDiff * 7) / 8)) {
             return 9; // Getting old, try to move before timeout
         }
         return 8 - state;
@@ -928,7 +928,7 @@ private:
         assert(destEB >= 0);
         eraseEB(destEB);
         emptyEBs--;
-        for (int cnt = 0; (getEBState(destEB) < 8 ) && (cnt < 8); cnt++) {  // Loop until full or at most 8 times since we should have at least 1 move per cycle
+        for (int cnt = 0; (getEBState(destEB) < 8) && (cnt < 8); cnt++) {   // Loop until full or at most 8 times since we should have at least 1 move per cycle
             static int eb = 0; // The current EB to GC, we'll start at the last eb checked and loop around
             // Find first non-meta EB
             while (ebIsMeta(eb) || (eb == destEB)) {

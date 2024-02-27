@@ -60,12 +60,12 @@ static void ftl_close(void *handle) {
     }
 }
 
-static void *ftl_open (int readonly) {
-  return NBDKIT_HANDLE_NOT_NEEDED;
+static void *ftl_open(int readonly) {
+    return NBDKIT_HANDLE_NOT_NEEDED;
 }
 
 static int64_t ftl_get_size(void *handle) {
-  return (int64_t)flashLBAs * 512;
+    return (int64_t)flashLBAs * 512;
 }
 
 static int ftl_pwrite(void *handle, const void *buf, uint32_t count, uint64_t offset, uint32_t flags) {
@@ -77,7 +77,7 @@ static int ftl_pwrite(void *handle, const void *buf, uint32_t count, uint64_t of
         for (int i = 0; i < flashLBAs; i++) {
             uint8_t tmp[512];
             ftl.read(i, tmp);
-            if (memcmp(tmp, lbaCopy + i *512, 512)) {
+            if (memcmp(tmp, lbaCopy + i * 512, 512)) {
                 fprintf(stderr, "ERROR, lba mismatch %d\n", i);
             }
         }
@@ -121,19 +121,19 @@ static int ftl_trim(void *handle, uint32_t count, uint64_t offset, uint32_t flag
 }
 
 static struct nbdkit_plugin plugin = {
-  .name              = "spiftl",
-  .version           = "1.0",
-  .load              = ftl_load,
-  .open              = ftl_open,
-  .close             = ftl_close,
-  .get_size          = ftl_get_size,
+    .name              = "spiftl",
+    .version           = "1.0",
+    .load              = ftl_load,
+    .open              = ftl_open,
+    .close             = ftl_close,
+    .get_size          = ftl_get_size,
 
-  .can_trim          = ftl_can_trim,
+    .can_trim          = ftl_can_trim,
 
-  .pread             = ftl_pread,
-  .pwrite            = ftl_pwrite,
-  .trim              = ftl_trim,
-  .block_size        = ftl_block_size
+    .pread             = ftl_pread,
+    .pwrite            = ftl_pwrite,
+    .trim              = ftl_trim,
+    .block_size        = ftl_block_size
 };
 
-NBDKIT_REGISTER_PLUGIN (plugin)
+NBDKIT_REGISTER_PLUGIN(plugin)

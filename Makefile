@@ -22,3 +22,7 @@ clean:
 valgrind:
 	g++ -g -o0 -o valgrindtest valgrindtest.cpp
 	valgrind  --leak-check=full --track-origins=yes --error-limit=no --show-leak-kinds=all --error-exitcode=999 --tool=memcheck ./valgrindtest 666
+
+statictest:
+	g++ -g -o0 -o staticwearleveltest staticwearleveltest.cpp
+	./staticwearleveltest

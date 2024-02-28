@@ -26,6 +26,7 @@
 #include <string.h>
 #include <cassert>
 #include <vector>
+#include <list>
 #include <map>
 
 #include "FlashInterface.h"

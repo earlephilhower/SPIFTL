@@ -180,6 +180,13 @@ public:
         return ret;
     }
 
+    bool persistIfDirty() {
+        if (metadataAge) {
+            return persist();
+        }
+        return false;
+    }
+
     bool write(int lba, const uint8_t *data) {
         if ((lba < 0) || (lba >= flashLBAs)) {
             return false ;
@@ -567,6 +574,8 @@ private:
         writeMetadata32b(peCountOffset, wb);
 
         closeMetadataStream(wb); // Will 0-fill and add checksum at end
+
+        metadataAge = 0;
 
         return true;
     }

@@ -25,7 +25,7 @@
 #include <bitset>
 #include <string.h>
 #include <cassert>
-#include <list>
+#include <vector>
 #include <map>
 
 #include "FlashInterface.h"
@@ -50,6 +50,7 @@ public:
         ebState = new uint8_t[(eraseBlocks + 1) / 2];
         metaEBList = new int16_t[metaEBs];
         l2p = new L2P[flashLBAs];
+        metadataEBList.reserve(metaEBs); // Guarantee it can fit the list and avoid any memory allocations during FTL persistance
     };
 
     ~SPIFTL() {
@@ -423,9 +424,8 @@ private:
         uint32_t crc;
     };
 
-
     const char metadataSig[8] = {'S', 'P', 'I', 'F', 'T', 'L', '0', '1'};
-    std::list<int> metadataEBList;
+    std::vector<uint16_t> metadataEBList;
     int metadataEBoffset;
     uint8_t metadataEBindex;
     MetadataCRC32 metadataCRC;
@@ -489,7 +489,7 @@ private:
             uint32_t crc = metadataCRC.get();
             memcpy(&wb[flashWriteBufferSize - 4], &crc, 4);
             _fi->program(metadataEBList.front(), 4096 - flashWriteBufferSize, wb, flashWriteBufferSize);
-            metadataEBList.pop_front();
+            metadataEBList.erase(metadataEBList.begin());
             metadataCRC.reset();
             metadataEBoffset = 0;
             metadataEBindex++;
@@ -626,7 +626,7 @@ private:
     inline uint8_t readMetadata8b() {
         if (metadataEBoffset >= 4096 - 4) {
             metadataEBoffset = 0;
-            metadataEBList.pop_front();
+            metadataEBList.erase(metadataEBList.begin());
             mdOpenEB = _fi->readEB(metadataEBList.front());
         }
         if (metadataEBoffset < 12) {

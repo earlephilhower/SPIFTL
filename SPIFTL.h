@@ -51,7 +51,7 @@ public:
         ebState = new uint8_t[(eraseBlocks + 1) / 2];
         metaEBList = new int16_t[metaEBs];
         l2p = new L2P[flashLBAs];
-        metadataEBList.reserve(metaEBs); // Guarantee it can fit the list and avoid any memory allocations during FTL persistance
+        metadataEBList.reserve(metaEBs); // Guarantee it can fit the list and avoid any memory allocations during FTL persistence
     };
 
     ~SPIFTL() {
